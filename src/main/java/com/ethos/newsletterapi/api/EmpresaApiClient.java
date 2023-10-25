@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@FeignClient(name = "empresa", url = "http://localhost:8082/v1.0/empresas")
+@FeignClient(name = "empresa", url = "http://empresa-api:8082/v1.0/empresas")
 public interface EmpresaApiClient {
     @GetMapping(path = "/assinante?assinanteNewsletter=true")
     List<Empresa> getEmpresasAssinantes();
