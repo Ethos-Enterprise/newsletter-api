@@ -44,6 +44,7 @@ public class EnviadorEmailService {
             helper.setFrom(remetente);
             helper.setTo(destinatario);
             helper.setSubject(titulo);
+            helper.setText(html, true);
             File directory = new File("src/main/resources/templates/images");
             File[] files = directory.listFiles();
 
@@ -54,7 +55,6 @@ public class EnviadorEmailService {
                     helper.addInline(file.getName(), res);
                 }
             }
-            helper.setText(html, true);
         } catch (MessagingException | IOException e) {
             throw new MailParseException(e);
         }
