@@ -2,9 +2,14 @@ package com.ethos.newsletterapi.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import lombok.RequiredArgsConstructor;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.MailParseException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -34,12 +39,23 @@ public class EnviadorEmailService {
 
         MimeMessage message = mailSender.createMimeMessage();
         try {
+            String html = new String(Files.readAllBytes(Paths.get("src/main/resources/templates/email.html")));
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(remetente);
             helper.setTo(destinatario);
             helper.setSubject(titulo);
-            helper.setText(conteudo);
-        } catch (MessagingException e) {
+            File directory = new File("src/main/resources/templates/images");
+            File[] files = directory.listFiles();
+
+            assert files != null;
+            for (File file : files) {
+                if(file.isFile() && file.getName().contains(".png") || file.getName().contains(".gif")){
+                    FileSystemResource res = new FileSystemResource(file);
+                    helper.addInline(file.getName(), res);
+                }
+            }
+            helper.setText(html, true);
+        } catch (MessagingException | IOException e) {
             throw new MailParseException(e);
         }
 
