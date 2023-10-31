@@ -52,7 +52,7 @@ public class EnviadorEmailService {
             for (File file : files) {
                 if(file.isFile() && file.getName().contains(".png") || file.getName().contains(".gif")){
                     FileSystemResource res = new FileSystemResource(file);
-                    helper.addInline(file.getName(), res);
+                    helper.addInline(file.getName(), res, "image/png");
                 }
             }
         } catch (MessagingException | IOException e) {
