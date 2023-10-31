@@ -11,7 +11,8 @@ public class AssinanteEmail implements Assinante {
 
     @Override
     public void receberNewsletter(EnviadorEmailService enviadorEmailService, Newsletter newsletter) {
-        enviadorEmailService.sendEmail(EMAIL_EMPRESA, this.email, newsletter.titulo(), newsletter.conteudo());
+        String titulo = String.format("Olá %s, confira nossas novidades", this.nome);
+        enviadorEmailService.sendEmail(EMAIL_EMPRESA, this.email, titulo, newsletter.conteudo());
     }
 
     public AssinanteEmail(String nome, String email) {
